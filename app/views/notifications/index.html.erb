@@ -1,0 +1,30 @@
+<div class="container">
+  <div class="notifications col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
+    <h2>お知らせ</h2>
+    <%= link_to '全てのお知らせを表示する', '?m=all' %>
+    <hr>
+    <ul>
+      <% if @notifications.blank? %>
+        <div class="alert alert-info">
+          お知らせはありません。
+        </div>
+      <% else %>
+        <% @notifications.each do |notification| %>
+          <li>
+            <div class="notif-header">
+              <span class="label label-info"><%= get_notif_status_string(notification.read) %></span>
+              <span class="pull-right"><%= posted_time(notification.created_at) %></span>
+            </div>
+          </li>
+          <li>
+            <p class="notif-body">
+              <%= notification.comment.user.try(:name) %>さんが
+              あなたのブログ（<%= link_to "#{notification.comment.blog.title}", blog_path(notification.comment.blog, notification_id: notification.id) %>）にコメントしました。
+            </p>
+          </li>
+          <hr>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+</div>
